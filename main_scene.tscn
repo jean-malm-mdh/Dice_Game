@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://dc556gn0tfx5i"]
+
+[ext_resource type="PackedScene" uid="uid://mdctf0b70acu" path="res://deck.tscn" id="1_vkikm"]
+[ext_resource type="Script" path="res://GameArea.cs" id="2_3a4xg"]
+[ext_resource type="Script" path="res://ResetButton.cs" id="3_mxpym"]
+[ext_resource type="Script" path="res://ComputeButton.cs" id="4_mq4ie"]
+
+[node name="Main_Scene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Deck" parent="." instance=ExtResource("1_vkikm")]
+layout_mode = 0
+offset_left = 521.0
+offset_top = 21.0
+offset_right = 614.0
+offset_bottom = 162.0
+
+[node name="GameArea" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 189.0
+offset_right = 1137.0
+offset_bottom = 640.0
+script = ExtResource("2_3a4xg")
+
+[node name="ResetButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 178.0
+offset_bottom = 114.0
+text = "Reset"
+script = ExtResource("3_mxpym")
+
+[node name="ComputeButton" type="Button" parent="." node_paths=PackedStringArray("gameArea")]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 74.0
+offset_right = 979.0
+offset_bottom = 105.0
+text = "Compute"
+script = ExtResource("4_mq4ie")
+gameArea = NodePath("../GameArea")
+
+[connection signal="ResetTrigger" from="ResetButton" to="Deck" method="Reset"]
+[connection signal="ResetTrigger" from="ResetButton" to="GameArea" method="Reset"]
+[connection signal="pressed" from="ResetButton" to="ResetButton" method="OnPressed"]
+[connection signal="pressed" from="ComputeButton" to="ComputeButton" method="ComputeButtonOnPress"]
