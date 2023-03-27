@@ -39,7 +39,7 @@ public partial class ComputeButton2 : Button
 		}
 
 		var info_dialog = new AcceptDialog();
-		info_dialog.DialogText = resultText;
+		info_dialog.DialogText = "The score is : " + resultText;
 		info_dialog.WindowTitle = "Computed Score";
 		AddChild(info_dialog);
 		info_dialog.PopupCentered(new Vector2(200,200));

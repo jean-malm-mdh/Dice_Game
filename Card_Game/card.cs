@@ -27,21 +27,45 @@ public partial class card : Control
 		animSprite.Stop();
 	}
 
+	void flip()
+    {
+        isFaceDown = !isFaceDown;
+    }
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
 	{
 		set_animation();
 	}
 
-	public override object GetDragData(Vector2 position)
+    Dictionary<string, uint> make_data()
+    {
+        var data = new Dictionary<string, uint>(Data.ToDictionary());
+		if (isFaceDown)
+			data["faceDown"] = 1u;
+        return data;
+	}
+
+    public override object GetDragData(Vector2 position)
 	{
-		var data = new Dictionary<string, uint>(Data.ToDictionary());
+		var data = make_data();
 		var preview = new Label();
 		preview.RectSize = new Vector2(50, 50);
-		preview.Text = Data.ToString();
+		preview.Text = isFaceDown ? "Unknown - Face Down" : Data.ToString();
 		SetDragPreview(preview);
 		QueueFree();
 		return data;
 	}
-
+	private void _on_Card_gui_input(object @event)
+	{
+		if (@event == null) return;
+		if (!(@event is InputEventMouseButton)) return;
+		var input = @event as InputEventMouseButton;
+		if(input.ButtonIndex != (int)ButtonList.Right) return;
+		if (!input.Pressed) return;
+		flip();
+	}
 }
+
+
+

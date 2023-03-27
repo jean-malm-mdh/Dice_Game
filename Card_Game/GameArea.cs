@@ -36,7 +36,7 @@ public partial class GameArea : Panel
 		var card = (card)cardScene.Instance();
 		card.RectPosition = atPosition;
 		card.Data = new DiceGame.CardData((DiceGame.CardData.SuiteVal)_data["suite"], (DiceGame.CardData.ValueVal)_data["value"]);
-		card.isFaceDown = false;
+		card.isFaceDown = _data.Contains("faceDown");
 		this.AddChild(card);
 	}
 }

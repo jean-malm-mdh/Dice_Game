@@ -78,3 +78,5 @@ scale = Vector2( 0.596639, 0.605422 )
 frames = SubResource( 1 )
 animation = "Back"
 centered = false
+
+[connection signal="gui_input" from="." to="." method="_on_Card_gui_input"]
