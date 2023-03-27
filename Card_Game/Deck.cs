@@ -15,6 +15,7 @@ public partial class Deck : ColorRect
 
 	public void Reset()
 	{
+		GD.Randomize();
 		cards = CardData.GetCards(_ => GD.Randi());
 	}
 
