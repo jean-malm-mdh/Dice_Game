@@ -3,7 +3,6 @@ using System;
 using DiceGame;
 using System.Collections.Generic;
 using System.Linq;
-using Godot.Collections;
 
 public partial class Deck : ColorRect
 {
@@ -16,27 +15,29 @@ public partial class Deck : ColorRect
 
 	public void Reset()
 	{
+		GD.Randomize();
 		cards = CardData.GetCards(_ => GD.Randi());
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public CardData GetTopCard()
 	{
+		if (cards.Count > 0) return cards.Pop();
+		return null;
 	}
 
-	public override Variant _GetDragData(Vector2 atPosition)
+	public override object GetDragData(Vector2 atPosition)
 	{
 		CardData data = null;
-		cards.TryPop(out data);
+		data = GetTopCard();
 		var previewData = new Label
 		{
-			Size = new Vector2(50, 50),
+			RectSize = new Vector2(50, 50),
 			Text = data?.ToString()
 		};
 		SetDragPreview(previewData);
-		var res = new Godot.Collections.Dictionary<string, int>();
-		res["suite"] = (int)data.Suite;
-		res["value"] = (int)data.Value;
+		Godot.Collections.Dictionary<string, uint> res = new Godot.Collections.Dictionary<string, uint>();
+		res["suite"] = (uint)data.Suite;
+		res["value"] = (uint)data.Value;
 		return res;
 	}
 

@@ -7,35 +7,36 @@ public partial class GameArea : Panel
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		cardScene = ResourceLoader.Load<PackedScene>("res://card.tscn");
+		cardScene = ResourceLoader.Load<PackedScene>("res://Card.tscn");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 
 	public void Reset()
 	{
-		foreach(var child in this.GetChildren())
+		foreach(Node child in this.GetChildren())
 		{
 			child.QueueFree();
 		}
 	}
 
-	public override bool _CanDropData(Vector2 atPosition, Variant data)
+	public override bool CanDropData(Vector2 atPosition, object data)
 	{
-		bool isCardData = (data.VariantType == Variant.Type.Dictionary) && (data.AsGodotDictionary().ContainsKey("suite")) && (data.AsGodotDictionary().ContainsKey("value"));
-		return isCardData;
+		if (!(data is Godot.Collections.Dictionary)) {
+			return false;
+		}
+		var _data = (data as Godot.Collections.Dictionary);
+		bool hasSuiteData = _data.Contains("suite");
+		bool hasValueData = _data.Contains("value");
+		return hasSuiteData && hasValueData;
 	}
 
-	public override void _DropData(Vector2 atPosition, Variant data)
+	public override void DropData(Vector2 atPosition, object data)
 	{
-		var _data = data.AsGodotDictionary<string, uint>();
-		var card = (card)cardScene.Instantiate();
-		card.Position = atPosition;
-		card.Data = new DiceGame.CardData(_data["suite"], _data["value"]);
-		card.isFaceDown = false;
+		var _data = (data as Godot.Collections.Dictionary);
+		var card = (card)cardScene.Instance();
+		card.RectPosition = atPosition;
+		card.Data = new DiceGame.CardData((DiceGame.CardData.SuiteVal)_data["suite"], (DiceGame.CardData.ValueVal)_data["value"]);
+		card.isFaceDown = _data.Contains("faceDown");
 		this.AddChild(card);
 	}
 }
