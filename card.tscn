@@ -48,7 +48,7 @@
 [ext_resource path="res://CardImg/DIAMOND-7.svg" type="Texture" id=46]
 [ext_resource path="res://CardImg/DIAMOND-8.svg" type="Texture" id=47]
 [ext_resource path="res://CardImg/DIAMOND-9.svg" type="Texture" id=48]
-[ext_resource path="res://CardImg/MTG_Back.jpg" type="Texture" id=49]
+[ext_resource path="res://CardImg/Card_Back.png" type="Texture" id=49]
 [ext_resource path="res://CardImg/CLUB-2.svg" type="Texture" id=50]
 [ext_resource path="res://CardImg/CLUB-1.svg" type="Texture" id=51]
 [ext_resource path="res://CardImg/CLUB-3.svg" type="Texture" id=52]
@@ -74,7 +74,7 @@ margin_bottom = 204.0
 script = ExtResource( 54 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.596639, 0.605422 )
+scale = Vector2( 0.560166, 0.568412 )
 frames = SubResource( 1 )
 animation = "Back"
 centered = false
