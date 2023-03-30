@@ -6,7 +6,7 @@ using System.Linq;
 
 public partial class Deck : ColorRect
 {
-	Stack<CardData> cards = new Stack<CardData>();
+	Stack<Card> cards = new Stack<Card>();
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -16,10 +16,10 @@ public partial class Deck : ColorRect
 	public void Reset()
 	{
 		GD.Randomize();
-		cards = CardData.GetCards(_ => GD.Randi());
+		cards = Card.GetCards(_ => GD.Randi());
 	}
 
-	public CardData GetTopCard()
+	public Card GetTopCard()
 	{
 		if (cards.Count > 0) return cards.Pop();
 		return null;
@@ -27,7 +27,7 @@ public partial class Deck : ColorRect
 
 	public override object GetDragData(Vector2 atPosition)
 	{
-		CardData data = null;
+		Card data = null;
 		data = GetTopCard();
 		var previewData = new Label
 		{

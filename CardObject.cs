@@ -2,11 +2,18 @@ using DiceGame;
 using Godot;
 using Godot.Collections;
 using System;
-public partial class card : Control
+public partial class CardObject : Control
 {
-	public CardData Data { get; set; }
+	public Card Data { get; set; }
 
 	public bool isFaceDown = true;
+	
+	public int GetScore()
+	{
+		if (isFaceDown) return 0;
+		
+		return Data.GetScore(); 
+	}
 
 	AnimatedSprite animSprite = null;
 	// Called when the node enters the scene tree for the first time.
@@ -15,7 +22,7 @@ public partial class card : Control
 		animSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		if (Data == null)
 		{
-			Data = new CardData(GD.Randi() % 4 + 1, GD.Randi() % 13 + 1);
+			Data = new Card(GD.Randi() % CardData.NUMBER_OF_SUITES + 1, GD.Randi() % CardData.NUMBER_OF_VALUES + 1);
 		}
 	}
 

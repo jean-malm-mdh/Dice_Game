@@ -53,7 +53,7 @@
 [ext_resource path="res://CardImg/CLUB-1.svg" type="Texture" id=51]
 [ext_resource path="res://CardImg/CLUB-3.svg" type="Texture" id=52]
 [ext_resource path="res://CardImg/CLUB-4.svg" type="Texture" id=53]
-[ext_resource path="res://card.cs" type="Script" id=54]
+[ext_resource path="res://CardObject.cs" type="Script" id=55]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -69,9 +69,9 @@ animations = [ {
 } ]
 
 [node name="Card" type="Control"]
-margin_right = 140.0
-margin_bottom = 204.0
-script = ExtResource( 54 )
+margin_right = 136.0
+margin_bottom = 191.0
+script = ExtResource( 55 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.560166, 0.568412 )

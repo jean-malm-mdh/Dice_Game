@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class ComputeButton2 : Button
+public partial class ComputeButton : Button
 {
 	[Export]
 	Node gameArea;
@@ -26,8 +26,9 @@ public partial class ComputeButton2 : Button
 				score = 0;
 				foreach (var card in cards)
 				{
-					var _card = card as card;
-					score += _card.Data.GetScore();
+					if(!(card is CardObject)) continue;
+					var _card = card as CardObject;
+					score += _card.GetScore();
 				}
 
 				resultText = score.ToString();

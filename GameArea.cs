@@ -1,6 +1,6 @@
 using Godot;
 using System;
-
+using static DiceGame.CardData;
 public partial class GameArea : Panel
 {
 	PackedScene cardScene = null;
@@ -33,9 +33,9 @@ public partial class GameArea : Panel
 	public override void DropData(Vector2 atPosition, object data)
 	{
 		var _data = (data as Godot.Collections.Dictionary);
-		var card = (card)cardScene.Instance();
+		var card = (CardObject)cardScene.Instance();
 		card.RectPosition = atPosition;
-		card.Data = new DiceGame.CardData((DiceGame.CardData.SuiteVal)_data["suite"], (DiceGame.CardData.ValueVal)_data["value"]);
+		card.Data = new DiceGame.Card((SuiteVal)_data["suite"], (ValueVal)_data["value"]);
 		card.isFaceDown = _data.Contains("faceDown");
 		this.AddChild(card);
 	}
