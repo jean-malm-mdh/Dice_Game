@@ -28,9 +28,9 @@ public partial class card : Control
 	}
 
 	void flip()
-	{
-		isFaceDown = !isFaceDown;
-	}
+    {
+        isFaceDown = !isFaceDown;
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
@@ -38,15 +38,15 @@ public partial class card : Control
 		set_animation();
 	}
 
-	Dictionary<string, uint> make_data()
-	{
-		var data = new Dictionary<string, uint>(Data.ToDictionary());
+    Dictionary<string, uint> make_data()
+    {
+        var data = new Dictionary<string, uint>(Data.ToDictionary());
 		if (isFaceDown)
 			data["faceDown"] = 1u;
-		return data;
+        return data;
 	}
 
-	public override object GetDragData(Vector2 position)
+    public override object GetDragData(Vector2 position)
 	{
 		var data = make_data();
 		var preview = new Label();

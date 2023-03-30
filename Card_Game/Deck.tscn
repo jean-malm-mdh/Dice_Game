@@ -1,0 +1,6 @@
+[gd_scene format=2]
+
+[node name="Deck" type="ColorRect"]
+margin_right = 170.0
+margin_bottom = 250.0
+color = Color( 0.894118, 0.576471, 0.0784314, 1 )
