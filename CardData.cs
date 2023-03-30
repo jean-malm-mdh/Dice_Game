@@ -11,7 +11,10 @@ namespace DiceGame
 		public enum SuiteVal { Club=1, Diamond=2, Spade=3, Heart=4};
 		public enum ValueVal { Ace=1, Two=2, Three=3, Four=4, Five=5, Six=6,Seven=7, Eight=8,Nine=9,Ten=10,Jack=11,Queen=12,King=13 };
 		
-		public delegate int ScoreFunc(SuiteVal suite, ValueVal val);
+		public delegate int ScoreFunc(
+			SuiteVal suite, 
+			ValueVal val, 
+			bool isFaceDown);
 		
 		public const int NUMBER_OF_SUITES = 4;
 		public const int NUMBER_OF_VALUES = 13;
@@ -21,23 +24,31 @@ namespace DiceGame
 	{
 		public SuiteVal Suite { get; private set; }
 		public ValueVal Value { get; private set; }
+		public bool IsFaceDown { get; set; }
 
 		private static ScoreFunc scoreFunc = null;
-		
+		private static string ScoreExplanation = null;
 		public static void SetScoreFunc(int index)
 		{
-			scoreFunc = ScoreFunctions.ScoringFuncCollection[index];
+			var score_explanation = ScoreFunctions.ScoringFuncCollection[index];
+			scoreFunc = score_explanation.Item1;
+			ScoreExplanation = score_explanation.Item2;
+		}
+		
+		public void Flip()
+		{
+			IsFaceDown = !IsFaceDown;
 		}
 		
 		public int GetScore()
 		{
-			return scoreFunc(this.Suite, this.Value);
+			return scoreFunc(this.Suite, this.Value, this.IsFaceDown);
 		}
 
-		public Card(CardData.SuiteVal suite, CardData.ValueVal value)
+		public Card(CardData.SuiteVal suite, CardData.ValueVal val)
 		{
 			Suite = suite;
-			Value = value;
+			Value = val;
 			if(scoreFunc == null)
 				SetScoreFunc(1);
 		}
@@ -86,15 +97,23 @@ namespace DiceGame
 	}
 	public class ScoreFunctions
 	{
-		public static CardData.ScoreFunc[] ScoringFuncCollection = new ScoreFunc[] {
+		public static (CardData.ScoreFunc, string)[] ScoringFuncCollection = new (ScoreFunc, string)[] {
 			// Count All Hearts Only
-			delegate (SuiteVal suite, ValueVal val){ return suite == SuiteVal.Heart ? (int)val : 0; },
+			(delegate (SuiteVal suite, ValueVal val, bool isFaceDown)
+				{ return isFaceDown ? 0 : suite == SuiteVal.Heart ? (int)val : 0; }, 
+				"Count only Heart cards (Ace = 1) that are facing up"),
 			// Count All Spades Only
-			delegate (SuiteVal suite, ValueVal val){ return suite == SuiteVal.Spade ? (int)val : 0; },
+			(delegate (SuiteVal suite, ValueVal val, bool isFaceDown)
+				{ return isFaceDown ? 0 : suite == SuiteVal.Spade ? (int)val : 0; }, 
+				"Count only Spade cards (Ace = 1) that are facing up"),
 			// Count All Diamonds Only
-			delegate (SuiteVal suite, ValueVal val){ return suite == SuiteVal.Diamond ? (int)val : 0; },
+			(delegate (SuiteVal suite, ValueVal val, bool isFaceDown)
+				{ return isFaceDown ? 0 : suite == SuiteVal.Diamond ? (int)val : 0; }, 
+				"Count only Diamond cards (Ace = 1) that are facing up"),
 			// Count All Clubs Only
-			delegate (SuiteVal suite, ValueVal val){ return suite == SuiteVal.Club ? (int)val : 0; }
+			(delegate (SuiteVal suite, ValueVal val, bool isFaceDown)
+				{ return isFaceDown ? 0 : suite == SuiteVal.Club ? (int)val : 0; }, 
+				"Count only Club cards (Ace = 1) that are facing up")
 		};
 	}
 }

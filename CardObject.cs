@@ -5,13 +5,9 @@ using System;
 public partial class CardObject : Control
 {
 	public Card Data { get; set; }
-
-	public bool isFaceDown = true;
 	
 	public int GetScore()
 	{
-		if (isFaceDown) return 0;
-		
 		return Data.GetScore(); 
 	}
 
@@ -28,15 +24,15 @@ public partial class CardObject : Control
 
 	void set_animation()
 	{
-		animSprite.Animation = isFaceDown ? "Back" : "Front";
-		animSprite.Frame = isFaceDown ? 0 : (int)Data.GetZeroBasedCanonicalOrder();
+		animSprite.Animation = Data.IsFaceDown ? "Back" : "Front";
+		animSprite.Frame = Data.IsFaceDown ? 0 : (int)Data.GetZeroBasedCanonicalOrder();
 		animSprite.Play();
 		animSprite.Stop();
 	}
 
 	void flip()
 	{
-		isFaceDown = !isFaceDown;
+		Data.Flip();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,23 +41,27 @@ public partial class CardObject : Control
 		set_animation();
 	}
 
-	Dictionary<string, uint> make_data()
+	Dictionary<string, uint> make_drag_data()
 	{
-		var data = new Dictionary<string, uint>(Data.ToDictionary());
-		if (isFaceDown)
-			data["faceDown"] = 1u;
-		return data;
+		var move_data = new Dictionary<string, uint>(Data.ToDictionary());
+		
+		if (Data.IsFaceDown)
+		{
+			var value_does_not_matter = 1u;
+			move_data["faceDown"] = value_does_not_matter;
+		}
+		return move_data;
 	}
 
 	public override object GetDragData(Vector2 position)
 	{
-		var data = make_data();
+		var dragData = make_drag_data();
 		var preview = new Label();
 		preview.RectSize = new Vector2(50, 50);
-		preview.Text = isFaceDown ? "Unknown - Face Down" : Data.ToString();
+		preview.Text = Data.IsFaceDown ? "Unknown - Face Down" : Data.ToString();
 		SetDragPreview(preview);
 		QueueFree();
-		return data;
+		return dragData;
 	}
 	private void _on_Card_gui_input(object @event)
 	{
