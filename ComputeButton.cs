@@ -8,16 +8,18 @@ public static class GameLog
 	public static int Tries { get; private set; }
 	static List<string> states = new List<string>();
 	static List<int> results = new List<int>();
+	static int cheatEnabledAtTry = -1;
 	public static IEnumerable<int> GetResults()
 	{
 		return results;
 	}
 
-	public static void AddTry(int result, string state)
+	public static void AddTry(int result, string state, bool cheatEnabled=false)
 	{
 		Tries++;
 		states.Add(state);
 		results.Add(result);
+		if (cheatEnabled && cheatEnabledAtTry == -1) cheatEnabledAtTry = Tries;
 	}
 
 	public static void Reset()
@@ -27,7 +29,8 @@ public static class GameLog
 		results = new List<int>();
 		states.Clear();
 		states = new List<string>();
-	}
+		cheatEnabledAtTry = -1;
+    }
 
 }
 
@@ -73,8 +76,9 @@ public partial class ComputeButton : Button
 				}
 
 				resultText = score.ToString();
-				GameLog.AddTry(score.Value, state_sb.ToString());
-				logger.AddLine($"Try nr {GameLog.Tries}: " + resultText);
+				bool hasCheatBeenEnabled = (GetParent().GetNode<Deck>("Deck")?.CanCheat).GetValueOrDefault();
+				GameLog.AddTry(score.Value, state_sb.ToString(), hasCheatBeenEnabled);
+				logger.AddLine($"Try nr {GameLog.Tries}: " + resultText + (hasCheatBeenEnabled ? " - cheat enabled" : ""));
 			}
 		}
 		else

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using static DiceGame.CardData;
+using Godot;
 
 namespace DiceGame
 {
@@ -28,7 +29,7 @@ namespace DiceGame
 
 		private static ScoreFunc scoreFunc = null;
 		private static string ScoreExplanation = null;
-		public static void SetScoreFunc(int index)
+		public static void SetScoreFunc(uint index)
 		{
 			var score_explanation = ScoreFunctions.ScoringFuncCollection[index];
 			scoreFunc = score_explanation.Item1;
@@ -50,11 +51,17 @@ namespace DiceGame
 			Suite = suite;
 			Value = val;
 			if(scoreFunc == null)
-				SetScoreFunc(1);
+				SetScoreFunc(GD.Randi() % (uint)ScoreFunctions.ScoringFuncCollection.Length);
 		}
 		public Card(uint suite_i, uint val_i) : this((CardData.SuiteVal)suite_i, (CardData.ValueVal)val_i) 
-		{}
-		public Card(IDictionary<string,uint> suite_value_ints) : this(suite_value_ints["suite"], suite_value_ints["value"])
+		{ }
+
+        public Card(uint canonical_zero_value) : this(
+			(CardData.SuiteVal)(canonical_zero_value / NUMBER_OF_VALUES + 1), 
+			(CardData.ValueVal)(canonical_zero_value % NUMBER_OF_VALUES + 1))
+        { }
+
+        public Card(IDictionary<string,uint> suite_value_ints) : this(suite_value_ints["suite"], suite_value_ints["value"])
 		{}
 
 		public IDictionary<string, uint> ToDictionary()
