@@ -1,22 +1,62 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Text;
+
+public static class GameLog
+{
+	public static int Tries { get; private set; }
+	static List<string> states = new List<string>();
+	static List<int> results = new List<int>();
+	public static IEnumerable<int> GetResults()
+	{
+		return results;
+	}
+
+	public static void AddTry(int result, string state)
+	{
+		Tries++;
+		states.Add(state);
+		results.Add(result);
+	}
+
+	public static void Reset()
+	{
+		Tries = 0;
+		results.Clear();
+		results = new List<int>();
+		states.Clear();
+		states = new List<string>();
+	}
+
+}
 
 public partial class ComputeButton : Button
 {
 	[Export]
-	Node gameArea;
+	GameArea gameArea;
+
+	[Export]
+	Log logger;
+
+	[Export]
+	TextEdit Score;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		base._Ready();
-		gameArea = GetParent<Node>().GetNode<Panel>("GameArea");
+		var parent = GetParent<Node>();
+
+		gameArea = parent.GetNode<GameArea>("GameArea");
+		logger = parent.GetNode<Log>("Log");
+
 	}
 	private void _on_ComputeButton_pressed()
 	{
 		int? score = null;
 		string resultText = "Error";
-
+		StringBuilder state_sb = new StringBuilder();
 		if (gameArea != null && (gameArea is GameArea))
 		{
 			var cards = (gameArea as GameArea).GetChildren();
@@ -28,10 +68,13 @@ public partial class ComputeButton : Button
 				{
 					if(!(card is CardObject)) continue;
 					var _card = card as CardObject;
+					state_sb.AppendLine(_card.ToString());
 					score += _card.GetScore();
 				}
 
 				resultText = score.ToString();
+				GameLog.AddTry(score.Value, state_sb.ToString());
+				logger.AddLine($"Try nr {GameLog.Tries}: " + resultText);
 			}
 		}
 		else

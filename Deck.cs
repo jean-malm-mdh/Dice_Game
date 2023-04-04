@@ -3,6 +3,7 @@ using System;
 using DiceGame;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public partial class Deck : ColorRect
 {
@@ -21,14 +22,14 @@ public partial class Deck : ColorRect
 
 	public Card GetTopCard()
 	{
+		if (cards.Count == 0) Reset();
 		if (cards.Count > 0) return cards.Pop();
 		return null;
 	}
 
 	public override object GetDragData(Vector2 atPosition)
 	{
-		Card data = null;
-		data = GetTopCard();
+		Card data = GetTopCard();
 		var previewData = new Label
 		{
 			RectSize = new Vector2(50, 50),
@@ -40,5 +41,14 @@ public partial class Deck : ColorRect
 		res["value"] = (uint)data.Value;
 		return res;
 	}
+	private void _on_Deck_gui_input(object @event)
+	{
+		if (!(@event is InputEventMouseButton)) return;
+		var _event = @event as InputEventMouseButton;
+		if (_event.ButtonIndex != (int)ButtonList.Right || !_event.Pressed) return;
+        GD.PrintS(_event.AsText());
+    }
+
 
 }
+
