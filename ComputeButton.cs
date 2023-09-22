@@ -30,7 +30,7 @@ public static class GameLog
 		states.Clear();
 		states = new List<string>();
 		cheatEnabledAtTry = -1;
-    }
+	}
 
 }
 

@@ -56,12 +56,12 @@ namespace DiceGame
 		public Card(uint suite_i, uint val_i) : this((CardData.SuiteVal)suite_i, (CardData.ValueVal)val_i) 
 		{ }
 
-        public Card(uint canonical_zero_value) : this(
+		public Card(uint canonical_zero_value) : this(
 			(CardData.SuiteVal)(canonical_zero_value / NUMBER_OF_VALUES + 1), 
 			(CardData.ValueVal)(canonical_zero_value % NUMBER_OF_VALUES + 1))
-        { }
+		{ }
 
-        public Card(IDictionary<string,uint> suite_value_ints) : this(suite_value_ints["suite"], suite_value_ints["value"])
+		public Card(IDictionary<string,uint> suite_value_ints) : this(suite_value_ints["suite"], suite_value_ints["value"])
 		{}
 
 		public IDictionary<string, uint> ToDictionary()

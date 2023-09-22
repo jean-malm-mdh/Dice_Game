@@ -49,7 +49,7 @@ script = ExtResource( 4 )
 
 [node name="HelpInfo" type="RichTextLabel" parent="."]
 margin_left = 551.0
-margin_top = 379.0
+margin_top = 334.0
 margin_right = 1014.0
 margin_bottom = 600.0
 rect_pivot_offset = Vector2( 75, 96 )
@@ -62,7 +62,7 @@ The game will calculate a score based on its state (cards in the Game Area). The
 The dark box is the Game Board. 
 You may add cards to the Game Area by dragging and dropping them from the orange square (the deck).
 
-Cards are drawn at random. However, it is also possible to \"Cheat\" in order to control the top card of the deck. To activate cheat mode, please double-click the deck with the right mouse button.
+Cards are drawn at random. However, it is also possible to \"Cheat\" in order to control the top card of the deck. To activate cheat mode, press the cheat button.
 "
 text = "Welcome to the game!
 
@@ -71,7 +71,7 @@ The game will calculate a score based on its state (cards in the Game Area). The
 The dark box is the Game Board. 
 You may add cards to the Game Area by dragging and dropping them from the orange square (the deck).
 
-Cards are drawn at random. However, it is also possible to \"Cheat\" in order to control the top card of the deck. To activate cheat mode, please double-click the deck with the right mouse button.
+Cards are drawn at random. However, it is also possible to \"Cheat\" in order to control the top card of the deck. To activate cheat mode, press the cheat button.
 "
 script = ExtResource( 2 )
 
@@ -121,16 +121,23 @@ margin_left = 9.0
 margin_top = 67.0
 margin_right = 80.0
 margin_bottom = 81.0
-text = "Value:"
+text = "Value (1-13):"
 
 [node name="lblSuiteValue" type="Label" parent="."]
 margin_left = 10.0
 margin_top = 11.0
 margin_right = 81.0
 margin_bottom = 25.0
-text = "Suite:"
+text = "Suite (1-4):"
 
-[connection signal="gui_input" from="Deck" to="Deck" method="_on_Deck_gui_input"]
+[node name="cheatButton" type="Button" parent="."]
+margin_left = 383.0
+margin_top = 69.0
+margin_right = 491.0
+margin_bottom = 133.0
+text = "Activate Cheat!"
+
 [connection signal="pressed" from="ResetButton" to="GameArea" method="Reset"]
 [connection signal="pressed" from="ResetButton" to="ResetButton" method="_on_ResetButton_pressed"]
 [connection signal="pressed" from="ComputeButton" to="ComputeButton" method="_on_ComputeButton_pressed"]
+[connection signal="pressed" from="cheatButton" to="Deck" method="EnableCheating"]

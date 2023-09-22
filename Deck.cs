@@ -9,44 +9,44 @@ public partial class Deck : ColorRect
 {
 	Stack<Card> cards = new Stack<Card>();
 
-    [Export]
-    HSlider suiteSelector, valueSelector;
+	[Export]
+	HSlider suiteSelector, valueSelector;
 
 	[Export]
 	Label lblValue, lblSuite;
 
-    [Signal]
-    public delegate void CheatEnabledEventHandler();
+	[Signal]
+	public delegate void CheatEnabledEventHandler();
 
-    public bool CanCheat { get; private set; }
+	public bool CanCheat { get; private set; }
 
 	public void EnableCheating() 
 	{ 
 		CanCheat = true;
 		suiteSelector.Visible = true;
-        valueSelector.Visible = true;
-        lblValue.Visible = true;
-        lblSuite.Visible = true;
-    }
+		valueSelector.Visible = true;
+		lblValue.Visible = true;
+		lblSuite.Visible = true;
+	}
 	public void DisableCheating()
 	{
 		CanCheat = false;
 		suiteSelector.Visible = false;
 		valueSelector.Visible = false;
-        lblValue.Visible = false;
-        lblSuite.Visible = false;
-    }
+		lblValue.Visible = false;
+		lblSuite.Visible = false;
+	}
 
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-        suiteSelector = GetParent<Node>().GetNode<HSlider>("SuiteSelector");
-        valueSelector = GetParent<Node>().GetNode<HSlider>("ValueSelector");
-        lblSuite = GetParent<Node>().GetNode<Label>("lblSuiteValue");
-        lblValue = GetParent<Node>().GetNode<Label>("lblValueValue");
-        Reset();
+		suiteSelector = GetParent<Node>().GetNode<HSlider>("SuiteSelector");
+		valueSelector = GetParent<Node>().GetNode<HSlider>("ValueSelector");
+		lblSuite = GetParent<Node>().GetNode<Label>("lblSuiteValue");
+		lblValue = GetParent<Node>().GetNode<Label>("lblValueValue");
+		Reset();
 	}
 
 	public void Reset()
@@ -78,25 +78,8 @@ public partial class Deck : ColorRect
 		res["value"] = (uint)data.Value;
 		return res;
 	}
-	private void _on_Deck_gui_input(object @event)
-	{
-		if (!(@event is InputEventMouseButton)) return;
-		var _event = @event as InputEventMouseButton;
-		if (_event.ButtonIndex != (int)ButtonList.Right || !_event.Pressed) return;
-		if (_event.Doubleclick)
-		{
-			EnableCheating();
-			EmitSignal(nameof(CheatEnabledEventHandler));
-		}
-		GD.PrintS(_event.AsText());
-	}
-
-
 	private void _on_CardList_gui_input(object @event)
 	{
 		
 	}
 }
-
-
-
