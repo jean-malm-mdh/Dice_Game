@@ -1,11 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://mdctf0b70acu"]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource type="Script" path="res://Deck.cs" id="1_f5m4s"]
+[ext_resource path="res://Deck.cs" type="Script" id=1]
 
 [node name="Deck" type="ColorRect"]
-offset_left = 490.0
-offset_top = 23.0
-offset_right = 583.0
-offset_bottom = 164.0
-color = Color(0.87451, 0.439216, 0.180392, 1)
-script = ExtResource("1_f5m4s")
+margin_right = 170.0
+margin_bottom = 250.0
+color = Color( 0.894118, 0.576471, 0.0784314, 1 )
+script = ExtResource( 1 )
